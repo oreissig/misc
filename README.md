@@ -16,3 +16,8 @@ parallelfor
 -----------
 
 Contains a parallel implementation of the common for-each construct, where each step is executed concurrently with other steps.
+
+fix_nvram
+---------
+
+A JScript file for Windows, that automates the temporary fixing of dead NVRAM batteries of Sun workstations and servers over serial console.
