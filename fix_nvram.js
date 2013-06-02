@@ -4,7 +4,6 @@ var delay = 22;
 
 var WshShell = WScript.CreateObject("WScript.Shell");
 
-//WScript.Echo("Press OK to bring PuTTY into foreground and fix NVRAM");
 confirm = WshShell.Popup("Press OK to bring PuTTY into foreground and fix NVRAM", 120, "Fix NVRAM", 1);
 if (confirm != 1)
 	WScript.Quit(666);
