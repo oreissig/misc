@@ -12,7 +12,6 @@ import java.util.Set;
 
 import com.google.common.base.Function;
 import com.google.common.collect.AbstractIterator;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterators;
 
 public class CopyOnWriteHashMap<K, V> extends AbstractMap<K, V> {
@@ -129,15 +128,7 @@ public class CopyOnWriteHashMap<K, V> extends AbstractMap<K, V> {
 
 			@Override
 			public V setValue(V value) {
-				Entry<K, V>[] newData = Arrays.copyOf(data, data.length);
-
-				V old = putInternal(newData, k, v);
-				if (old == null)
-					throw new ConcurrentModificationException(
-							"entry has been removed");
-
-				update(data, newData);
-				return old;
+				throw new UnsupportedOperationException();
 			}
 		};
 
@@ -151,10 +142,8 @@ public class CopyOnWriteHashMap<K, V> extends AbstractMap<K, V> {
 
 	@Override
 	public V remove(Object key) {
-		return removeInternal(table, key);
-	}
+		final Table t = table;
 
-	private V removeInternal(final Table t, Object key) {
 		int i = findIndex(key, t.data);
 		Entry<K, V> e = t.data[i];
 		if (e == null)
@@ -168,12 +157,12 @@ public class CopyOnWriteHashMap<K, V> extends AbstractMap<K, V> {
 		}
 	}
 
+	/**
+	 * @see Collection#removeAll(Collection)
+	 */
 	public boolean removeAll(Collection<K> keys) {
 		final Table t = table;
-		return removeAllInternal(t, keys) != t;
-	}
 
-	private Table removeAllInternal(final Table t, Collection<K> keys) {
 		Entry<K, V>[] data = t.data;
 		int removed = 0;
 
@@ -193,9 +182,9 @@ public class CopyOnWriteHashMap<K, V> extends AbstractMap<K, V> {
 		if (removed > 0) {
 			Table newT = new Table(data, t.size - removed);
 			update(t, newT);
-			return newT;
+			return true;
 		} else
-			return t;
+			return false;
 	}
 
 	@Override
@@ -205,7 +194,6 @@ public class CopyOnWriteHashMap<K, V> extends AbstractMap<K, V> {
 
 			@Override
 			public Iterator<Entry<K, V>> iterator() {
-				// TODO support remove
 				return new AbstractIterator<Entry<K, V>>() {
 					private int i = 0;
 
@@ -227,26 +215,8 @@ public class CopyOnWriteHashMap<K, V> extends AbstractMap<K, V> {
 			}
 
 			@Override
-			public boolean remove(Object o) {
-				Entry<K, V> e = (Entry<K, V>) o;
-				return remove(e.getKey());
-			}
-
-			@Override
-			public boolean removeAll(Collection<?> c) {
-				Collection<K> keys = Collections2.transform(c,
-						new Function<Object, K>() {
-							@Override
-							public K apply(Object input) {
-								Entry<K, V> e = (Entry<K, V>) input;
-								return e.getKey();
-							}
-						});
-				return removeAll(keys);
-			}
-
-			@Override
 			public boolean contains(Object o) {
+				@SuppressWarnings("unchecked")
 				Entry<K, V> expected = (Entry<K, V>) o;
 				int i = findIndex(expected.getKey(), t.data);
 				return expected == t.data[i];
@@ -273,16 +243,6 @@ public class CopyOnWriteHashMap<K, V> extends AbstractMap<K, V> {
 			@Override
 			public int size() {
 				return t.size;
-			}
-
-			@Override
-			public boolean remove(Object k) {
-				return remove(k);
-			}
-
-			@Override
-			public boolean removeAll(Collection<?> c) {
-				return removeAll(c);
 			}
 
 			public boolean contains(Object k) {
@@ -359,14 +319,6 @@ public class CopyOnWriteHashMap<K, V> extends AbstractMap<K, V> {
 			throw new ConcurrentModificationException();
 		else
 			table = newTable;
-	}
-
-	private synchronized void update(Entry<K, V>[] oldData,
-			Entry<K, V>[] newData) {
-		if (table.data != oldData)
-			throw new ConcurrentModificationException();
-		else
-			table = new Table(newData, table.size);
 	}
 
 	private class Table {
