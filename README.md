@@ -11,6 +11,12 @@ yield
 
 Contains a YieldingIterator, that allows for code to be written sequentially, while occasionally dropping some instance via the "yield" method. Those instances can be iterated over in the usual Java fashion.
 
+BoundedBlockingQueue
+------------------
+
+A decorator, that takes an arbitrary BlockingQueue and makes it bounded.
+It is useful for implementations, that do not provide a bounded variant, such as PriorityBlockingQueue.
+
 CopyOnWriteHashMap
 ------------------
 
