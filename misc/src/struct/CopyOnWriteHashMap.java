@@ -14,7 +14,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.Iterators;
 
-public class CopyOnWriteHashMap<K, V> extends AbstractMap<K, V> {
+public class CopyOnWriteHashMap<K, V> extends AbstractMap<K, V> implements Cloneable {
 
 	static final int DEFAULT_INITIAL_CAPACITY = 16;
 	static final int MAXIMUM_CAPACITY = 1 << 30;
@@ -45,6 +45,13 @@ public class CopyOnWriteHashMap<K, V> extends AbstractMap<K, V> {
 		this(Math.max((int) (m.size() / DEFAULT_LOAD_FACTOR) + 1,
 				DEFAULT_INITIAL_CAPACITY), DEFAULT_LOAD_FACTOR);
 		putAll(m);
+	}
+
+	public CopyOnWriteHashMap(CopyOnWriteHashMap<K, V> m) {
+		this.threshold = m.threshold;
+		Table t = m.table;
+		this.table = new Table(grow(t, 0), t.size);
+		this.loadFactor = m.loadFactor;
 	}
 
 	@Override
@@ -319,6 +326,11 @@ public class CopyOnWriteHashMap<K, V> extends AbstractMap<K, V> {
 			throw new ConcurrentModificationException();
 		else
 			table = newTable;
+	}
+
+	@Override
+	protected Object clone() {
+		return new CopyOnWriteHashMap<>(this);
 	}
 
 	private class Table {
