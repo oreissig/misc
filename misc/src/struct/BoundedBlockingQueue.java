@@ -16,6 +16,9 @@ import java.util.concurrent.TimeoutException;
  * This decorator takes an arbitrary {@link BlockingQueue} and makes it bounded.
  * It is useful for implementations, that do not provide a bounded variant, such
  * as {@link PriorityBlockingQueue}.
+ * <p>
+ * The implementation synchronizes on the given queue object and checks the
+ * queue's size before inserting a new element.
  * 
  * @author oreissig
  */
