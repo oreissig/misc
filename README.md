@@ -17,6 +17,12 @@ BoundedBlockingQueue
 A decorator, that takes an arbitrary BlockingQueue and makes it bounded.
 It is useful for implementations, that do not provide a bounded variant, such as PriorityBlockingQueue.
 
+PriorityDeque, PriorityBlockingDeque
+------------------------------------
+
+PriorityDeque is a wrapper class for Guava's MinMaxPriorityQueue, that conforms to the standard Deque interface.
+PriorityBlockingDeque takes the PriorityDeque and wraps it to make up an (unbounded) BlockingDeque.
+
 CopyOnWriteHashMap
 ------------------
 
