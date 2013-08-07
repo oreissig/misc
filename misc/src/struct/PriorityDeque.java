@@ -1,13 +1,10 @@
 package struct;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Queue;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import com.google.common.collect.ForwardingQueue;
 import com.google.common.collect.MinMaxPriorityQueue;
@@ -58,21 +55,25 @@ public class PriorityDeque<E> extends ForwardingQueue<E> implements Deque<E> {
 		return q;
 	}
 
+	@Deprecated
 	@Override
 	public void addFirst(E e) {
 		q.add(e);
 	}
 
+	@Deprecated
 	@Override
 	public void addLast(E e) {
 		q.add(e);
 	}
 
+	@Deprecated
 	@Override
 	public boolean offerFirst(E e) {
 		return q.offer(e);
 	}
 
+	@Deprecated
 	@Override
 	public boolean offerLast(E e) {
 		return q.offer(e);
@@ -124,52 +125,33 @@ public class PriorityDeque<E> extends ForwardingQueue<E> implements Deque<E> {
 		return q.peekLast();
 	}
 
+	@Deprecated
 	@Override
 	public boolean removeFirstOccurrence(Object o) {
 		return q.remove(o);
 	}
 
+	@Deprecated
 	@Override
 	public boolean removeLastOccurrence(Object o) {
 		return q.remove(o);
 	}
 
+	@Deprecated
 	@Override
 	public void push(E e) {
 		q.add(e);
 	}
 
+	@Deprecated
 	@Override
 	public E pop() {
 		return q.removeFirst();
 	}
 
+	@Deprecated
 	@Override
 	public Iterator<E> descendingIterator() {
-		Comparator<? super E> reverse = Collections
-				.reverseOrder(q.comparator());
-		SortedSet<E> s = new TreeSet<>(reverse);
-		s.addAll(q);
-		final Iterator<E> i = s.iterator();
-		return new Iterator<E>() {
-			private E current;
-
-			@Override
-			public boolean hasNext() {
-				return i.hasNext();
-			}
-
-			@Override
-			public E next() {
-				current = i.next();
-				return current;
-			}
-
-			@Override
-			public void remove() {
-				i.remove();
-				q.remove(current);
-			}
-		};
+		return q.iterator();
 	}
 }
