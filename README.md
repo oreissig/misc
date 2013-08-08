@@ -17,6 +17,11 @@ BoundedBlockingQueue
 A decorator, that takes an arbitrary BlockingQueue and makes it bounded.
 It is useful for implementations, that do not provide a bounded variant, such as PriorityBlockingQueue.
 
+AbstractDeque
+-------------
+
+An abstract class to help implementing Deques in a similar fashion to java.util.AbstractQueue for Queues.
+
 PriorityDeque, PriorityBlockingDeque
 ------------------------------------
 
