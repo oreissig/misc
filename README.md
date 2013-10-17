@@ -34,6 +34,17 @@ CopyOnWriteHashMap
 A Java implementation of a HashMap, that does copy on write. This allows for the Map to be traversed safely and consistently, while modifications take place.
 Note that this Map does not allow multiple concurrent modifications, it just guarantees a consistent view for all readers.
 
+AbstractMap2
+-------------
+
+An abstract base class for map, that is easier to implement than Java's standard AbstractMap.
+
+ZipMap
+-----------
+
+This class provides a Map-like view of the contents of a zip file.
+It is based on Java's standard ZipFile class, but provides a better API.
+
 parallelfor
 -----------
 
