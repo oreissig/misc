@@ -3,13 +3,13 @@ misc
 
 just some misc. stuff
 
-needs [Google Guava](https://code.google.com/p/guava-libraries/) 14.0
+needs [Google Guava](https://code.google.com/p/guava-libraries/) 15.0
 
 
 yield
 -----
 
-Contains a YieldingIterator, that allows for code to be written sequentially, while occasionally dropping some instance via the "yield" method. Those instances can be iterated over in the usual Java fashion.
+Contains a YieldingIterator, that helps implementing coroutines, that drop some instance via the "yield" method. Those instances can be iterated over in the usual Java fashion.
 
 BoundedBlockingQueue
 ------------------
@@ -17,10 +17,12 @@ BoundedBlockingQueue
 A decorator, that takes an arbitrary BlockingQueue and makes it bounded.
 It is useful for implementations, that do not provide a bounded variant, such as PriorityBlockingQueue.
 
-AbstractDeque
--------------
+AbstractQueue2, AbstractDeque
+-----------------------------
 
-An abstract class to help implementing Deques in a similar fashion to java.util.AbstractQueue for Queues.
+AbstractQueue2 extends the common java.util.AbstractQueue with default peek and poll implementations.
+
+AbstractDeque is an abstract class to help implementing Deques in a similar fashion to java.util.AbstractQueue for Queues.
 
 PriorityDeque, PriorityBlockingDeque
 ------------------------------------
@@ -48,7 +50,7 @@ It is based on Java's standard ZipFile class, but provides a better API.
 parallelfor
 -----------
 
-Contains a parallel implementation of the common for-each construct, where each step is executed concurrently with other steps.
+Contains a parallel implementation of the common for-each construct for Java 7, where each step is executed concurrently with other steps.
 
 fix_nvram
 ---------
